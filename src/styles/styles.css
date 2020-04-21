@@ -1,0 +1,55 @@
+body {
+    background-color: aliceblue;
+}
+
+.text-header {
+    text-align: center;
+}
+.pieChartContainer {
+    height: 300px;
+    width: 100%;
+    margin: 30px;
+    display: flex;
+    justify-content: center;
+}
+.legendItem {
+    margin: 15px;
+}
+.legendBlock {
+    display:inline-block;
+    width:20px;
+}
+.dataTable {
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.table-header {
+    font-size: larger;
+    font-weight: bold;
+}
+
+td {
+    padding: 10px;
+}
+
+a {
+    text-decoration: none;
+    font-size: larger;
+    color: black;
+}
+
+.button-collection {
+    width: 100%;
+    text-align: center;
+}
+
+.btn {
+    padding: 10px;
+    height: 50px;
+    width: 150px;
+    border-radius: 15px;
+    display: inline-block;
+    justify-content: center;
+    background-color: transparent;
+}

@@ -1,0 +1,33 @@
+version: '2.4'
+services:
+  quest1-php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: quest1-php
+    restart: unless-stopped
+    cpus: 2
+    mem_limit: 2g
+    volumes:
+      - ./:/usr/src/app
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./hosts:/etc/nginx/conf.d
+      - ./src:/var/www
+      - ./logs:/var/log/nginx
+      - ./ssl:/ssl:ro
+    links:
+      - quest1-php
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456

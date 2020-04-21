@@ -1,0 +1,20 @@
+{
+    "name": "freelancehunt/quest1",
+    "require": {
+        "twig/twig": "^3.0",
+        "ext-curl": "*",
+        "ext-mysqli": "*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anastasiia Sychova",
+            "email": "compadio@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Quest1\\": "src/"
+        }
+    }
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Freelancehunt Quest1 (Anastasiia Sychova)</title>
+        <link href="../src/styles/styles.css" type="text/css" rel="stylesheet">
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <h2 class="text-header">Таблица открытых проектов в категориях Веб-программирование, PHP и Базы данных</h2>
+        <div class="dataTable">
+            <table>
+                <tr class="table-header">
+                    <td>Name</td>
+                    <td>Cost</td>
+                    <td>Currency</td>
+                    <td>Skills</td>
+                    <td>Employer Name</td>
+                    <td>Employer Login</td>
+                </tr>
+                {%for project in projects%}
+                    <tr>
+                        <td><a href="{{ project.link }}"> {{ project.name }}</a></td>
+                        <td>{{ project.cost }}</td>
+                        <td>{{ project.currency }}</td>
+                        <td>{%for skill in project.skills%}
+                                {{ skills[skill].name }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                        </td>
+                        <td>{{ project.employerName }}</td>
+                        <td>{{ project.employerLogin }}</td>
+                    </tr>
+                {%endfor%}
+            </table>
+        </div>
+        <div class="button-collection">
+            {% if prevPage %}
+            <button class="btn"><a href="{{ prevPage }}">Previous page</a></button>
+            {% endif %}
+            {% if nextPage %}
+                <button class="btn"><a href="{{ nextPage }}">Next page</a></button>
+            {% endif %}
+        </div>
+
+        <div class="pieChartContainer">
+            <canvas id="pieChart"></canvas>
+            <div id="pieChartLegend"></div>
+        </div>
+        <div id="init_params" class="no_display"
+             data-pie_data="{{ pieData }}"
+        ></div>
+        <script type="text/javascript" src="../src/scripts/index.js"></script>
+    </body>
+</html>
