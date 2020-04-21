@@ -13,7 +13,7 @@ MySQL version 5.7
 Open src/Database/Mysql.php, edit credentials at __construct() if needed.
 
 ## Create database
-Execute the mysql/migrations/init.sql file in your database.
+Execute the migrations/init.sql file in your database.
 
 ## Run default PHP server
 ```bash
