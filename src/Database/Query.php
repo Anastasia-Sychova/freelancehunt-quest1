@@ -1,6 +1,8 @@
 <?php
 namespace Quest1\Database;
 
+require_once ('Mysql.php');
+
 use Quest1\Errors\ConnectionError;
 use Quest1\Errors\QueryError;
 use Quest1\Models\Project;
@@ -108,7 +110,7 @@ INSERT INTO projects
 
     public function getProjectsBySkills(array $skills, $offset = 0, $limit = 10)
     {
-         $projects = [];
+        $projects = [];
         $result = $this->mysql->query(sprintf(
             'SELECT * FROM projects WHERE %s ORDER BY id DESC LIMIT %d OFFSET %d',
             $this->makeSkillSearch($skills),
