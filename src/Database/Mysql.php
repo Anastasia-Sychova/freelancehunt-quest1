@@ -1,8 +1,11 @@
 <?php
 namespace Quest1\Database;
 
-use Quest1\Errors\ConnectionError;
-use Quest1\Errors\QueryError;
+require_once ('./Errors/ConnectionError.php');
+require_once ('./Errors/QueryError.php');
+
+use \Quest1\Errors\ConnectionError;
+use \Quest1\Errors\QueryError;
 
 /**
  * @method string real_escape_string(string $escapeString)
@@ -18,10 +21,10 @@ class Mysql
      * @var array
      */
     private $params;
-    private static $errors = array(
+    private static $errors = [
         1040,// Too many connections
         2006,// Server has gone away
-    );
+    ];
 
     /**
      * Mysql constructor.
@@ -39,6 +42,13 @@ class Mysql
         ];
     }
 
+    /**
+     * @param $key
+     *
+     * @return mixed
+     *
+     * @throws ConnectionError
+     */
     public function __get($key)
     {
         if (!$this->mysqli)
@@ -47,10 +57,19 @@ class Mysql
         return $this->mysqli->$key;
     }
 
+    /**
+     * @throws ConnectionError
+     */
     protected function connect()
     {
-        $this->mysqli = @new \mysqli($this->params['host'], $this->params['user'], $this->params['pass'],
-            $this->params['db'], $this->params['port'], $this->params['socket']);
+        $this->mysqli = @new \mysqli(
+            $this->params['host'],
+            $this->params['user'],
+            $this->params['pass'],
+            $this->params['db'],
+            $this->params['port'],
+            $this->params['socket']
+        );
 
         if ($this->mysqli->connect_error)
             throw new ConnectionError($this->mysqli->connect_error, $this->mysqli->connect_errno);
@@ -58,17 +77,27 @@ class Mysql
         $this->mysqli->set_charset('utf8');
     }
 
-    public function __call($func, $params)
+    /**
+     * @param $func
+     * @param array $params
+     *
+     * @return mixed
+     *
+     * @throws ConnectionError
+     */
+    public function __call($func, array $params)
     {
         if (!$this->mysqli)
             $this->connect();
 
-        return call_user_func_array([$this->mysqli, $func], $params);
+        return call_user_func_array(array($this->mysqli, $func), $params);
     }
 
     /**
      * @param string $query
+     *
      * @return bool|\mysqli_result
+     *
      * @throws ConnectionError
      * @throws QueryError
      */
@@ -78,11 +107,12 @@ class Mysql
             $this->connect();
 
         $result = $this->mysqli->query($query);
-        if ($result === false)
-            if (in_array((int) $this->mysqli->errno, self::$errors))
-                throw new ConnectionError($this->mysqli->error, $this->mysqli->errno);
-            else
-                throw new QueryError($query . "\n" . $this->mysqli->error, $this->mysqli->errno);
+        if ($result === false && in_array((int) $this->mysqli->errno, self::$errors)) {
+            throw new ConnectionError($this->mysqli->error, $this->mysqli->errno);
+        }
+        if ($result === false && $this->mysqli->errno && !in_array((int) $this->mysqli->errno, self::$errors)) {
+            throw new QueryError($query . "\n" . $this->mysqli->error, $this->mysqli->errno);
+        }
 
         return $result;
     }

@@ -37,6 +37,6 @@ try {
         'prevPage' => $prevPage,
         'pieData'  => json_encode($pieData),
     ]);
-} catch (Exception $e) {
-  die ('ERROR: ' . $e->getMessage());
+} catch (Exception $exception) {
+  echo 'ERROR: ' . $exception->getMessage();
 }

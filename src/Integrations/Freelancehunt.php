@@ -92,8 +92,8 @@ class Freelancehunt
             'Content-Type: application/json',
             'Accept: application/json',
             'Accept-Language: en',
+            "Authorization: Bearer $this->token",
         ];
-        $headers[] = "Authorization: Bearer $this->token";
 
         $ch = curl_init($this->host . $url);
 

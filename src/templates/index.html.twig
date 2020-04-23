@@ -11,12 +11,12 @@
         <div class="dataTable">
             <table>
                 <tr class="table-header">
-                    <td>Name</td>
-                    <td>Cost</td>
-                    <td>Currency</td>
-                    <td>Skills</td>
-                    <td>Employer Name</td>
-                    <td>Employer Login</td>
+                    <td>Заголовок</td>
+                    <td>Цена</td>
+                    <td>Валюта</td>
+                    <td>Категории</td>
+                    <td>Имя заказчика</td>
+                    <td>Логин заказчика</td>
                 </tr>
                 {%for project in projects%}
                     <tr>
@@ -35,10 +35,10 @@
         </div>
         <div class="button-collection">
             {% if prevPage %}
-            <button class="btn"><a href="{{ prevPage }}">Previous page</a></button>
+            <button class="btn"><a href="{{ prevPage }}">Назад</a></button>
             {% endif %}
             {% if nextPage %}
-                <button class="btn"><a href="{{ nextPage }}">Next page</a></button>
+                <button class="btn"><a href="{{ nextPage }}">Далее</a></button>
             {% endif %}
         </div>
 

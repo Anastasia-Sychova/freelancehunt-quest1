@@ -52,7 +52,7 @@ class Project implements \JsonSerializable
      */
     public function __construct(\stdClass $data = null)
     {
-        if(!$data) {
+        if (!$data) {
             return;
         }
 
@@ -148,11 +148,11 @@ class Project implements \JsonSerializable
     }
 
     /**
-     * @param string $skill
+     * @param int $skill
      *
      * @return self
      */
-    public function addSkill(string $skill): Project
+    public function addSkill(int $skill): Project
     {
         $this->skills[] = $skill;
 

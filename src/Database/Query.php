@@ -23,7 +23,7 @@ class Query
      */
     public function __construct(Mysql $mysql = null)
     {
-        if(is_null($mysql)) {
+        if (is_null($mysql)) {
             $this->mysql = new Mysql();
 
             return;
@@ -37,7 +37,7 @@ class Query
      */
     public function dropAllSkills()
     {
-        $this->mysql->query('DELETE FROM skills');
+        $this->mysql->query('TRUNCATE TABLE skills');
     }
 
     /**
@@ -46,7 +46,7 @@ class Query
      */
     public function dropAllProjects()
     {
-        $this->mysql->query('DELETE FROM projects');
+        $this->mysql->query('TRUNCATE TABLE projects');
     }
 
     /**
@@ -58,9 +58,9 @@ class Query
     public function createSkill(\stdClass $skill)
     {
         $this->mysql->query(sprintf(
-            'INSERT INTO skills (id, `name`) VALUES (%d, "%s")',
-            $skill->id,
-            $this->mysql->real_escape_string($skill->name))
+                'INSERT INTO skills (id, `name`) VALUES (%d, "%s")',
+                $skill->id,
+                $this->mysql->real_escape_string($skill->name))
         );
     }
 
@@ -74,8 +74,7 @@ class Query
     {
         $skills = [];
         $result = $this->mysql->query('SELECT * FROM skills ');
-        while ($row = $result->fetch_assoc())
-        {
+        while ($row = $result->fetch_assoc()) {
             $skills[$row['id']] = $row;
         }
         return $skills;
@@ -89,22 +88,21 @@ class Query
      */
     public function createProject(Project $project)
     {
-        $this->mysql->query(sprintf(
-                '
+        $this->mysql->query(sprintf('
 INSERT INTO projects
     (id, `name`, link, skills, cost, currency, employer_login, employer_name)
     VALUES (%1$d, "%2$s", "%3$s", "%4$s", %5$d, "%6$s", "%7$s", "%8$s")
     ON DUPLICATE KEY UPDATE
     `name` = "%2$s", link = "%3$s", skills = "%4$s", cost = %5$d, currency = "%6$s", employer_login = "%7$s", employer_name = "%8$s"
     ',
-                $project->getId(),
-                $this->mysql->real_escape_string($project->getName()),
-                $this->mysql->real_escape_string($project->getLink()),
-                $this->mysql->real_escape_string(json_encode($project->getSkills())),
-                $project->getCost(),
-                $this->mysql->real_escape_string($project->getCurrency()),
-                $this->mysql->real_escape_string($project->getEmployerLogin()),
-                $this->mysql->real_escape_string($project->getEmployerName())
+            $project->getId(),
+            $this->mysql->real_escape_string($project->getName()),
+            $this->mysql->real_escape_string($project->getLink()),
+            $this->mysql->real_escape_string(json_encode($project->getSkills())),
+            $project->getCost(),
+            $this->mysql->real_escape_string($project->getCurrency()),
+            $this->mysql->real_escape_string($project->getEmployerLogin()),
+            $this->mysql->real_escape_string($project->getEmployerName())
         ));
     }
 
@@ -117,9 +115,8 @@ INSERT INTO projects
             $limit,
             $offset
         ));
-        while ($row = $result->fetch_assoc())
-        {
-            $projects[] = new Project((object) $row);
+        while ($row = $result->fetch_assoc()) {
+            $projects[] = new Project((object)$row);
         }
         return $projects;
     }
@@ -130,7 +127,7 @@ INSERT INTO projects
             'SELECT count(id) FROM projects WHERE %s ORDER BY id DESC',
             $this->makeSkillSearch($skills)
         ));
-        $count = (int) $result->fetch_row()[0];
+        $count = (int)$result->fetch_row()[0];
 
         return ceil($count / $limit);
     }
@@ -146,16 +143,46 @@ INSERT INTO projects
             $costSearch
         ));
 
-        return (int) $result->fetch_row()[0];
+        return (int)$result->fetch_row()[0];
     }
 
     public function makeSkillSearch(array $skills): string
     {
         $search = [];
         foreach ($skills as $skill) {
-            $search[] = "JSON_CONTAINS(skills, '\"$skill\"')";
+            $search[] = "JSON_CONTAINS(skills, '$skill')";
         }
 
-        return implode (' OR ', $search);
+        return implode(' OR ', $search);
+    }
+
+    /**
+     * @throws ConnectionError
+     *
+     * @throws QueryError
+     */
+    public function start()
+    {
+        $this->mysql->query('BEGIN');
+    }
+
+    /**
+     * @throws ConnectionError
+     *
+     * @throws QueryError
+     */
+    public function commit()
+    {
+        $this->mysql->query('COMMIT');
+    }
+
+    /**
+     * @throws ConnectionError
+     *
+     * @throws QueryError
+     */
+    public function rollback()
+    {
+        $this->mysql->query('ROLLBACK');
     }
 }
