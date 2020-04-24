@@ -28,15 +28,15 @@ Open http://localhost:8000/src/index.php to see table and pie chart.
 
 ### TODOs
 * Make PHPUnit tests
-* Make page navigation without page reloading
+* Make page navigation without the page reloading
 * Make error handling
 * Fix problem with permissions in docker nginx
 * Use currency converter API
 
 
-# How use Quest1 with docker (not working now)
+# How use Quest1 with a docker (not working now)
 
-## Install docker and docker-compose at first.
+## Install the docker and docker-compose at first.
 
 To install docker (CE)
 https://docs.docker.com/engine/installation/linux/ubuntu/

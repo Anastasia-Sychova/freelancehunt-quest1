@@ -1,8 +1,6 @@
 <?php
 namespace Quest1\Database;
 
-require_once ('Mysql.php');
-
 use Quest1\Errors\ConnectionError;
 use Quest1\Errors\QueryError;
 use Quest1\Models\Project;
@@ -58,25 +56,26 @@ class Query
     public function createSkill(\stdClass $skill)
     {
         $this->mysql->query(sprintf(
-                'INSERT INTO skills (id, `name`) VALUES (%d, "%s")',
-                $skill->id,
-                $this->mysql->real_escape_string($skill->name))
+            'INSERT INTO skills (id, `name`) VALUES (%d, "%s")',
+            $skill->id,
+            $this->mysql->real_escape_string($skill->name))
         );
     }
 
     /**
-     * @param \stdClass $skill
+     * @return array
      *
      * @throws ConnectionError
      * @throws QueryError
      */
-    public function getSkills()
+    public function getSkills(): array
     {
         $skills = [];
         $result = $this->mysql->query('SELECT * FROM skills ');
         while ($row = $result->fetch_assoc()) {
             $skills[$row['id']] = $row;
         }
+
         return $skills;
     }
 
@@ -106,6 +105,16 @@ INSERT INTO projects
         ));
     }
 
+    /**
+     * @param array $skills
+     * @param int   $offset
+     * @param int   $limit
+     *
+     * @return array
+     *
+     * @throws ConnectionError
+     * @throws QueryError
+     */
     public function getProjectsBySkills(array $skills, $offset = 0, $limit = 10)
     {
         $projects = [];
@@ -118,9 +127,19 @@ INSERT INTO projects
         while ($row = $result->fetch_assoc()) {
             $projects[] = new Project((object)$row);
         }
+
         return $projects;
     }
 
+    /**
+     * @param array $skills
+     * @param int $limit
+     *
+     * @return false|float
+     *
+     * @throws ConnectionError
+     * @throws QueryError
+     */
     public function getProjectsBySkillsPageCount(array $skills, $limit = 10)
     {
         $result = $this->mysql->query(sprintf(
@@ -132,6 +151,17 @@ INSERT INTO projects
         return ceil($count / $limit);
     }
 
+    /**
+     * @param array $skills
+     * @param $currency
+     * @param int $minCost
+     * @param int $maxCost
+     *
+     * @return int
+     *
+     * @throws ConnectionError
+     * @throws QueryError
+     */
     public function getCostRangeData(array $skills, $currency, $minCost = 0, $maxCost = 0)
     {
         $costSearch = $minCost ? " AND cost > $minCost" : '';
@@ -146,6 +176,11 @@ INSERT INTO projects
         return (int)$result->fetch_row()[0];
     }
 
+    /**
+     * @param array $skills
+     *
+     * @return string
+     */
     public function makeSkillSearch(array $skills): string
     {
         $search = [];

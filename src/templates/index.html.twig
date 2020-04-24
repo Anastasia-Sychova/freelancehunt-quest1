@@ -1,10 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html lang="ru">
     <head>
         <title>Freelancehunt Quest1 (Anastasiia Sychova)</title>
         <link href="../src/styles/styles.css" type="text/css" rel="stylesheet">
-        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8">
     </head>
     <body>
         <h2 class="text-header">Таблица открытых проектов в категориях Веб-программирование, PHP и Базы данных</h2>
@@ -35,10 +35,10 @@
         </div>
         <div class="button-collection">
             {% if prevPage %}
-            <button class="btn"><a href="{{ prevPage }}">Назад</a></button>
+                <button id="prevPage" class="btn">Назад</button>
             {% endif %}
             {% if nextPage %}
-                <button class="btn"><a href="{{ nextPage }}">Далее</a></button>
+                <button id="nextPage" class="btn"> Далее</button>
             {% endif %}
         </div>
 
@@ -48,6 +48,8 @@
         </div>
         <div id="init_params" class="no_display"
              data-pie_data="{{ pieData }}"
+             data-prev_page="{{ prevPage }}"
+             data-next_page="{{ nextPage }}"
         ></div>
         <script type="text/javascript" src="../src/scripts/index.js"></script>
     </body>

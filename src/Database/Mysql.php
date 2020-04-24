@@ -1,9 +1,6 @@
 <?php
 namespace Quest1\Database;
 
-require_once ('./Errors/ConnectionError.php');
-require_once ('./Errors/QueryError.php');
-
 use \Quest1\Errors\ConnectionError;
 use \Quest1\Errors\QueryError;
 

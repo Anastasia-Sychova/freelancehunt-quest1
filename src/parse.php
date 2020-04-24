@@ -1,8 +1,5 @@
 <?php
-
-require_once ('Integrations/Freelancehunt.php');
-require_once ('Database/Query.php');
-require_once ('Models/Project.php');
+require_once './../vendor/autoload.php';
 
 use Quest1\Integrations\Freelancehunt;
 use Quest1\Models\Project;

@@ -1,8 +1,10 @@
-let params = document.getElementById('init_params').dataset;
-let pieData = JSON.parse(params.pie_data);
-let pieChart = document.getElementById("pieChart");
+let params         = document.getElementById('init_params').dataset;
+let pieData        = JSON.parse(params.pie_data);
+let pieChart       = document.getElementById("pieChart");
 let pieChartLegend = document.getElementById("pieChartLegend");
-pieChart.width = 300;
+let prevPage       = document.getElementById("prevPage");
+let nextPage       = document.getElementById("nextPage");
+pieChart.width  = 300;
 pieChart.height = 300;
 
 function drawPieSlice(context,centerX, centerY, radius, startAngle, endAngle, color) {
@@ -23,6 +25,10 @@ let PieChart = function(options) {
     this.draw = function() {
         let total_value = 0;
         let color_index = 0;
+        if (!this.options.hasOwnProperty('data')) {
+            return;
+        }
+
         for (let item in this.options.data) {
             let val = this.options.data[item];
             total_value += val;
@@ -65,7 +71,7 @@ let PieChart = function(options) {
         if (this.options.legend) {
             color_index = 0;
             let legendHTML = "";
-            for (item in this.options.data) {
+            for (let item in this.options.data) {
                 legendHTML += "<div class='legendItem'><span class='legendBlock' style='background-color:"+this.colors[color_index++]+";'>&nbsp;</span> "+item+"</div>";
             }
             this.options.legend.innerHTML = legendHTML;
@@ -82,3 +88,14 @@ let myPieChart = new PieChart(
     }
 );
 myPieChart.draw();
+
+if (prevPage) {
+    prevPage.onclick = function () {
+        document.location.href = params.prev_page;
+    };
+}
+if (nextPage) {
+    nextPage.onclick = function () {
+        document.location.href = params.next_page;
+    };
+}
